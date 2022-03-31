@@ -2,6 +2,7 @@
 #define TMPTYPES_HPP
 
 
+#include <cstdarg>
 #include <cstddef>
 #include <cstdint>
 #include <type_traits>
@@ -22,7 +23,7 @@ template<typename T> struct sizeof_void { enum { value = sizeof(T) }; };
 template<> struct sizeof_void<void> { enum { value = 0 }; };
 
 
-template<typename T, size_t t> struct TypeChar { static_assert(!t, "Unsupported type in variadic type list"); };
+template<typename T, size_t t> struct TypeChar { static_assert(!t&&!std::is_same<T, va_list>::value, "Unsupported type in variadic type list"); };
 template<> struct TypeChar<bool, sizeof(bool)> { enum { value = 'b' }; };
 template<typename T> struct TypeChar<T*, sizeof(void*)> { enum { value = 'p' }; };
 template<> struct TypeChar<double*, sizeof(double*)> { enum { value = 'd' }; };
@@ -35,6 +36,7 @@ template<> struct TypeChar<double, sizeof(double)> { enum { value = 'f' }; };
 template<> struct TypeChar<char*, sizeof(char*)> { enum { value = 's' }; };
 template<> struct TypeChar<const char*, sizeof(const char*)> { enum { value = 's' }; };
 template<> struct TypeChar<void, sizeof_void<void>::value> { enum { value = 'v' }; };
+template<> struct TypeChar<va_list, sizeof(va_list)> { enum { value = '\0' }; };
 
 template<const char t> struct CharType { static_assert(!t, "Unsupported type in variadic type list"); };
 template<> struct CharType<'b'> { typedef bool type; };
