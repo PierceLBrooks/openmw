@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#include <extern/osg-ffmpeg-videoplayer/libavformatdefines.hpp>
+#include <extern/osg-ffmpeg-videoplayer/libavutildefines.hpp>
+
 #if defined(_MSC_VER)
     #pragma warning (push)
     #pragma warning (disable : 4244)
@@ -50,7 +53,11 @@ namespace MWSound
 
         SwrContext *mSwr;
         enum AVSampleFormat mOutputSampleFormat;
+#if OPENMW_FFMPEG_5_OR_GREATER
+        AVChannelLayout mOutputChannelLayout;
+#else
         int64_t mOutputChannelLayout;
+#endif
         uint8_t *mDataBuf;
         uint8_t **mFrameData;
         int mDataBufLen;
@@ -59,9 +66,13 @@ namespace MWSound
 
         Files::IStreamPtr mDataStream;
 
-        static int readPacket(void *user_data, uint8_t *buf, int buf_size);
-        static int writePacket(void *user_data, uint8_t *buf, int buf_size);
-        static int64_t seek(void *user_data, int64_t offset, int whence);
+        static int readPacket(void* user_data, uint8_t* buf, int buf_size);
+#if OPENMW_FFMPEG_CONST_WRITEPACKET
+        static int writePacket(void* user_data, const uint8_t* buf, int buf_size);
+#else
+        static int writePacket(void* user_data, uint8_t* buf, int buf_size);
+#endif
+        static int64_t seek(void* user_data, int64_t offset, int whence);
 
         bool getAVAudioData();
         size_t readAVAudioData(void *data, size_t length);
