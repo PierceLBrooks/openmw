@@ -16,8 +16,9 @@ FIND_LIBRARY (RakNet_LIBRARY_RELEASE NAMES RakNetLibStatic
     /usr/local/lib
     /opt/local/lib
     $ENV{RAKNET_ROOT}/lib
+    ${RAKNET_ROOT}/lib
     )
-	
+  
 FIND_LIBRARY (RakNet_LIBRARY_DEBUG NAMES RakNetLibStaticd
     PATHS
     ENV LD_LIBRARY_PATH
@@ -28,43 +29,59 @@ FIND_LIBRARY (RakNet_LIBRARY_DEBUG NAMES RakNetLibStaticd
     /usr/local/lib
     /opt/local/lib
     $ENV{RAKNET_ROOT}/lib
-    )	
-	
-	
+    ${RAKNET_ROOT}/lib
+    )  
+  
+  
 
 FIND_PATH (RakNet_INCLUDES raknet/RakPeer.h
     ENV CPATH
     /usr/include
     /usr/local/include
     /opt/local/include
-	$ENV{RAKNET_ROOT}/include
+    $ENV{RAKNET_ROOT}/include
+    ${RAKNET_ROOT}/include
     )
  
 MESSAGE(STATUS ${RakNet_INCLUDES})
 MESSAGE(STATUS ${RakNet_LIBRARY_RELEASE})
+MESSAGE(STATUS ${RakNet_LIBRARY_DEBUG})
  
 IF(RakNet_INCLUDES AND RakNet_LIBRARY_RELEASE)
+  SET(RakNet_FOUND TRUE)
+ELSE(RakNet_INCLUDES AND RakNet_LIBRARY_RELEASE)
+  IF(RakNet_INCLUDES AND RakNet_LIBRARY_DEBUG)
     SET(RakNet_FOUND TRUE)
+  ENDIF(RakNet_INCLUDES AND RakNet_LIBRARY_DEBUG)
 ENDIF(RakNet_INCLUDES AND RakNet_LIBRARY_RELEASE)
 
 IF(RakNet_FOUND)
   SET(RakNet_INCLUDES ${RakNet_INCLUDES}/raknet)
   
   
-   IF (CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
+  IF (CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
+    IF(WIN32)
+      IF(RakNet_LIBRARY_RELEASE AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        SET(RakNet_LIBRARY optimized ${RakNet_LIBRARY_RELEASE} debug ${RakNet_LIBRARY_DEBUG} ws2_32.lib)
+      ELSE(RakNet_LIBRARY_RELEASE AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        SET(RakNet_LIBRARY optimized ${RakNet_LIBRARY_DEBUG} debug ${RakNet_LIBRARY_DEBUG} ws2_32.lib)
+      ENDIF(RakNet_LIBRARY_RELEASE AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    ELSE(WIN32)
+      IF(RakNet_LIBRARY_RELEASE AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         SET(RakNet_LIBRARY optimized ${RakNet_LIBRARY_RELEASE} debug ${RakNet_LIBRARY_DEBUG})
-		IF(WIN32)
-			SET(RakNet_LIBRARY optimized ${RakNet_LIBRARY_RELEASE} debug ${RakNet_LIBRARY_DEBUG} ws2_32.lib)
-		ENDIF(WIN32)
-   ELSE()
-        # if there are no configuration types and CMAKE_BUILD_TYPE has no value
-        # then just use the release libraries
-        SET(RakNet_LIBRARY ${RakNet_LIBRARY_RELEASE} )
-		IF(WIN32)
-			SET(RakNet_LIBRARY ${RakNet_LIBRARY_RELEASE} ws2_32.lib)
-		ENDIF(WIN32)
-   ENDIF()
-   
+      ELSE(RakNet_LIBRARY_RELEASE AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        SET(RakNet_LIBRARY optimized ${RakNet_LIBRARY_DEBUG} debug ${RakNet_LIBRARY_DEBUG})
+      ENDIF(RakNet_LIBRARY_RELEASE AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    ENDIF(WIN32)
+  ELSE(CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
+    # if there are no configuration types and CMAKE_BUILD_TYPE has no value
+    # then just use the release libraries
+    SET(RakNet_LIBRARY ${RakNet_LIBRARY_RELEASE} )
+    IF(WIN32)
+      SET(RakNet_LIBRARY ${RakNet_LIBRARY_RELEASE} ws2_32.lib)
+    ENDIF(WIN32)
+  ENDIF(CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
+  
   IF(NOT RakNet_FIND_QUIETLY)
     MESSAGE(STATUS "Found RakNet_LIBRARY_RELEASE: ${RakNet_LIBRARY_RELEASE}")
     MESSAGE(STATUS "Found RakNet_INCLUDES: ${RakNet_INCLUDES}")

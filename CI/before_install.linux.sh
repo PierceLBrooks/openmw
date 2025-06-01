@@ -7,7 +7,7 @@ if [ ! -z "${MATRIX_CC}" ]; then
 fi
 
 cd ~/
-git clone https://github.com/TES3MP/CrabNet
+git clone https://github.com/PierceLBrooks/CrabNet
 cd CrabNet
 cmake . -DCRABNET_ENABLE_DLL=OFF -DCRABNET_ENABLE_SAMPLES=OFF -DCMAKE_BUILD_TYPE=Release
 make -j3
