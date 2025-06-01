@@ -83,7 +83,7 @@ if(NOT OPENMW_USE_SYSTEM_MYGUI)
     include(FetchContent)
     FetchContent_Declare(mygui
         URL https://github.com/PierceLBrooks/mygui/archive/bf541802ca0ab49d36e1396500c901ee4ac6a9d3.zip
-        URL_HASH MD5=0a64c9cccc8f96dc8c08172175e68e1c
+        URL_HASH MD5=8c029f49c0af7178626e09996f18af75
         SOURCE_DIR fetched/mygui
     )
     FetchContent_MakeAvailableExcludeFromAll(mygui)
