@@ -95,13 +95,24 @@ struct CallbackIdentity
     constexpr CallbackIdentity(Callback<Types...>) : types(TypeString<Types...>::value), numargs(sizeof(TypeString<Types...>::value) - 1) {}
 };
 
+template <class T>
+struct ScriptAddress
+{
+    ScriptAddress(T val) : v_( val ) {}
+    constexpr T& get() const  { return v_; }
+    const T v_;
+};
 
 struct ScriptFunctionPointer : public ScriptIdentity
 {
     void *addr;
 #if (!defined(__clang__) && defined(__GNUC__))
     template<typename R, typename... Types>
+#if (!defined(_MSC_VER) && !defined(__MACH__) && !defined(__ANDROID__) && defined(__cplusplus) && __cplusplus >= 202302L)
+    constexpr ScriptFunctionPointer(Function<R, Types...> addr) : ScriptIdentity(addr), addr(ScriptAddress((void*)(addr)).get()) {}
+#else
     constexpr ScriptFunctionPointer(Function<R, Types...> addr) : ScriptIdentity(addr), addr((void*)(addr)) {}
+#endif
 #else
     template<typename R, typename... Types>
     constexpr ScriptFunctionPointer(Function<R, Types...> addr) : ScriptIdentity(addr), addr(addr) {}
