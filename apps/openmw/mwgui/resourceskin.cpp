@@ -9,11 +9,11 @@ namespace MWGui
     void resizeSkin(MyGUI::xml::ElementPtr _node)
     {
         _node->setAttribute("type", "ResourceSkin");
-        const std::string size = _node->findAttribute("size");
+        std::string size = _node->findAttribute("size").data();
         if (!size.empty())
             return;
 
-        const std::string textureName = _node->findAttribute("texture");
+        std::string textureName = _node->findAttribute("texture").data();
         if (textureName.empty())
             return;
 
@@ -30,11 +30,11 @@ namespace MWGui
             if (basis->getName() != "BasisSkin")
                 continue;
 
-            const std::string basisSkinType = basis->findAttribute("type");
+            std::string basisSkinType = basis->findAttribute("type").data();
             if (Misc::StringUtils::ciEqual(basisSkinType, "SimpleText"))
                 continue;
 
-            const std::string offset = basis->findAttribute("offset");
+            std::string offset = basis->findAttribute("offset").data();
             if (!offset.empty())
                 continue;
 
@@ -45,7 +45,7 @@ namespace MWGui
             {
                 if (state->getName() == "State")
                 {
-                    const std::string stateOffset = state->findAttribute("offset");
+                    std::string stateOffset = state->findAttribute("offset").data();
                     if (!stateOffset.empty())
                         continue;
 
@@ -56,7 +56,7 @@ namespace MWGui
                         bool hasTileSize = false;
                         while (property.next("Property"))
                         {
-                            const std::string key = property->findAttribute("key");
+                            std::string key = property->findAttribute("key").data();
                             if (key != "TileSize")
                                 continue;
 

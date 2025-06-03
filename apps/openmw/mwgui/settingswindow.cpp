@@ -81,34 +81,34 @@ namespace
 
     std::string getSettingType(MyGUI::Widget* widget)
     {
-        return widget->getUserString("SettingType");
+        return widget->getUserString("SettingType").data();
     }
 
     std::string getSettingName(MyGUI::Widget* widget)
     {
-        return widget->getUserString("SettingName");
+        return widget->getUserString("SettingName").data();
     }
 
     std::string getSettingCategory(MyGUI::Widget* widget)
     {
-        return widget->getUserString("SettingCategory");
+        return widget->getUserString("SettingCategory").data();
     }
 
     std::string getSettingValueType(MyGUI::Widget* widget)
     {
-        return widget->getUserString("SettingValueType");
+        return widget->getUserString("SettingValueType").data();
     }
 
     void getSettingMinMax(MyGUI::Widget* widget, float& min, float& max)
     {
-        const char* settingMin = "SettingMin";
-        const char* settingMax = "SettingMax";
+        std::string settingMin = widget->getUserString("SettingMin").data();
+        std::string settingMax = widget->getUserString("SettingMax").data();
         min = 0.f;
         max = 1.f;
-        if (!widget->getUserString(settingMin).empty())
-            min = MyGUI::utility::parseFloat(widget->getUserString(settingMin));
-        if (!widget->getUserString(settingMax).empty())
-            max = MyGUI::utility::parseFloat(widget->getUserString(settingMax));
+        if (!settingMin.empty())
+            min = MyGUI::utility::parseFloat(settingMin);
+        if (!settingMax.empty())
+            max = MyGUI::utility::parseFloat(settingMax);
     }
 
     void updateMaxLightsComboBox(MyGUI::ComboBox* box)
@@ -209,12 +209,12 @@ namespace MWGui
 
     void SettingsWindow::updateSliderLabel(MyGUI::ScrollBar *scroller, const std::string& value)
     {
-        std::string labelWidgetName = scroller->getUserString("SettingLabelWidget");
+        std::string labelWidgetName = scroller->getUserString("SettingLabelWidget").data();
         if (!labelWidgetName.empty())
         {
             MyGUI::TextBox* textBox;
             getWidget(textBox, labelWidgetName);
-            std::string labelCaption = scroller->getUserString("SettingLabelCaption");
+            std::string labelCaption = scroller->getUserString("SettingLabelCaption").data();
             labelCaption = Misc::StringUtils::format(labelCaption, value);
             textBox->setCaptionWithReplacing(labelCaption);
         }

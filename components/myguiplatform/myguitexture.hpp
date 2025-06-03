@@ -45,14 +45,14 @@ namespace osgMyGUI
 
         const std::string& getName() const override { return mName; }
 
-        void createManual(int width, int height, MyGUI::TextureUsage usage, MyGUI::PixelFormat format) override;
-        void loadFromFile(const std::string &fname) override;
-        void saveToFile(const std::string &fname) override;
+        void createManual(int width, int height, MyGUI::TextureUsage usage, MyGUI::PixelFormat format);
+        void loadFromFile(const std::string &fname);
+        void saveToFile(const std::string &fname);
 
-        void destroy() override;
+        void destroy();
 
-        void* lock(MyGUI::TextureUsage access) override;
-        void unlock() override;
+        void* lock(MyGUI::TextureUsage access);
+        void unlock();
         bool isLocked() OPENMW_MYGUI_CONST_GETTER_3_4_1 override { return mLockedImage.valid(); }
 
         int getWidth() OPENMW_MYGUI_CONST_GETTER_3_4_1 override { return mWidth; }
@@ -62,11 +62,11 @@ namespace osgMyGUI
         MyGUI::TextureUsage getUsage() OPENMW_MYGUI_CONST_GETTER_3_4_1 override { return mUsage; }
         size_t getNumElemBytes() OPENMW_MYGUI_CONST_GETTER_3_4_1 override { return mNumElemBytes; }
 
-        MyGUI::IRenderTarget *getRenderTarget() override;
+        MyGUI::IRenderTarget *getRenderTarget();
 
     // setShader() is a part of MyGUI::RenderManager interface since 3.4.1 release
 #if MYGUI_VERSION > MYGUI_DEFINE_VERSION(3, 4, 0)
-    void setShader(const std::string& _shaderName) override;
+    void setShader(const std::string& _shaderName);
 #endif
 
     /*internal:*/

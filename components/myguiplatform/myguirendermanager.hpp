@@ -76,30 +76,30 @@ public:
     { return mVertexFormat; }
 
     /** @see RenderManager::isFormatSupported */
-    bool isFormatSupported(MyGUI::PixelFormat format, MyGUI::TextureUsage usage) override;
+    bool isFormatSupported(MyGUI::PixelFormat format, MyGUI::TextureUsage usage);
 
     /** @see RenderManager::createVertexBuffer */
-    MyGUI::IVertexBuffer* createVertexBuffer() override;
+    MyGUI::IVertexBuffer* createVertexBuffer();
     /** @see RenderManager::destroyVertexBuffer */
-    void destroyVertexBuffer(MyGUI::IVertexBuffer *buffer) override;
+    void destroyVertexBuffer(MyGUI::IVertexBuffer *buffer);
 
     /** @see RenderManager::createTexture */
-    MyGUI::ITexture* createTexture(const std::string &name) override;
+    MyGUI::ITexture* createTexture(const std::string &name);
     /** @see RenderManager::destroyTexture */
-    void destroyTexture(MyGUI::ITexture* _texture) override;
+    void destroyTexture(MyGUI::ITexture* _texture);
     /** @see RenderManager::getTexture */
-    MyGUI::ITexture* getTexture(const std::string &name) override;
+    MyGUI::ITexture* getTexture(const std::string &name);
 
     // Called by the update traversal
     void update();
 
     // Called by the cull traversal
     /** @see IRenderTarget::begin */
-    void begin() override;
+    void begin();
     /** @see IRenderTarget::end */
-    void end() override;
+    void end();
     /** @see IRenderTarget::doRender */
-    void doRender(MyGUI::IVertexBuffer *buffer, MyGUI::ITexture *texture, size_t count) override;
+    void doRender(MyGUI::IVertexBuffer *buffer, MyGUI::ITexture *texture, size_t count);
 
     /** specify a StateSet to inject for rendering. The StateSet will be used by future doRender calls until you reset it to nullptr again. */
     void setInjectState(osg::StateSet* stateSet);
@@ -113,12 +113,12 @@ public:
 #if MYGUI_VERSION < MYGUI_DEFINE_VERSION(3, 4, 0)
     void setViewSize(int width, int height);
 #else
-    void setViewSize(int width, int height) override;
+    void setViewSize(int width, int height);
 #endif
 
     // registerShader() is a part of MyGUI::RenderManager interface since 3.4.1 release
 #if MYGUI_VERSION > MYGUI_DEFINE_VERSION(3, 4, 0)
-    void registerShader(const std::string& _shaderName, const std::string& _vertexProgramFile, const std::string& _fragmentProgramFile) override;
+    void registerShader(const std::string& _shaderName, const std::string& _vertexProgramFile, const std::string& _fragmentProgramFile);
 #endif
 
 /*internal:*/

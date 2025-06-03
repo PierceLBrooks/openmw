@@ -21,28 +21,28 @@ public:
     /** Get data stream from specified resource name.
         @param _name Resource name (usually file name).
     */
-    MyGUI::IDataStream* getData(const std::string& _name) OPENMW_MYGUI_CONST_GETTER_3_4_1 override;
+    MyGUI::IDataStream* getData(const std::string& _name) OPENMW_MYGUI_CONST_GETTER_3_4_1;
 
     /** Free data stream.
         @param _data Data stream.
     */
-    void freeData(MyGUI::IDataStream* _data) override;
+    void freeData(MyGUI::IDataStream* _data);
 
     /** Is data with specified name exist.
         @param _name Resource name.
     */
-    bool isDataExist(const std::string& _name) OPENMW_MYGUI_CONST_GETTER_3_4_1 override;
+    bool isDataExist(const std::string& _name) OPENMW_MYGUI_CONST_GETTER_3_4_1;
 
     /** Get all data names with names that matches pattern.
         @param _pattern Pattern to match (for example "*.layout").
     */
-    const MyGUI::VectorString& getDataListNames(const std::string& _pattern) OPENMW_MYGUI_CONST_GETTER_3_4_1 override;
+    const MyGUI::VectorString& getDataListNames(const std::string& _pattern) OPENMW_MYGUI_CONST_GETTER_3_4_1;
 
     /** Get full path to data.
         @param _name Resource name.
         @return Return full path to specified data.
     */
-    const std::string& getDataPath(const std::string& _name) OPENMW_MYGUI_CONST_GETTER_3_4_1 override;
+    std::string getDataPath(const std::string& _name) OPENMW_MYGUI_CONST_GETTER_3_4_1;
 
 private:
     std::string mResourcePath;

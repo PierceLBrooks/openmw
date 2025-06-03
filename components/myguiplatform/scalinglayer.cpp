@@ -128,8 +128,8 @@ namespace osgMyGUI
         {
             if (info->getName() == "Property")
             {
-                const std::string& key = info->findAttribute("key");
-                const std::string& value = info->findAttribute("value");
+                std::string key = info->findAttribute("key").data();
+                std::string value = info->findAttribute("value").data();
 
                 if (key == "Size")
                 {

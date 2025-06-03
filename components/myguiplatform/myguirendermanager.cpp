@@ -266,11 +266,11 @@ public:
     osg::Array* getVertexArray();
     osg::VertexBufferObject* getVertexBuffer();
 
-    void setVertexCount(size_t count) override;
-    size_t getVertexCount() OPENMW_MYGUI_CONST_GETTER_3_4_1 override;
+    void setVertexCount(size_t count);
+    size_t getVertexCount() OPENMW_MYGUI_CONST_GETTER_3_4_1;
 
-    MyGUI::Vertex *lock() override;
-    void unlock() override;
+    MyGUI::Vertex *lock();
+    void unlock();
 
 };
 

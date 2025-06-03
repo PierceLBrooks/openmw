@@ -43,7 +43,7 @@ namespace MWGui
         , mShowOwned(0)
         , mFrameDuration(0.f)
     {
-        getWidget(mDynamicToolTipBox, "DynamicToolTipBox");
+        mDynamicToolTipBox = getWidget("DynamicToolTipBox");
 
         mDynamicToolTipBox->setVisible(false);
 
@@ -169,7 +169,7 @@ namespace MWGui
                     ++i;
                 }
 
-                std::string type = focus->getUserString("ToolTipType");
+                std::string type = focus->getUserString("ToolTipType").data();
 
                 if (type == "")
                 {
@@ -225,7 +225,7 @@ namespace MWGui
                     ToolTipInfo info;
 
                     const ESM::Spell *spell =
-                        MWBase::Environment::get().getWorld()->getStore().get<ESM::Spell>().find(focus->getUserString("Spell"));
+                        MWBase::Environment::get().getWorld()->getStore().get<ESM::Spell>().find(focus->getUserString("Spell").data());
                     info.caption = spell->mName;
                     Widgets::SpellEffectList effects;
                     for (const ESM::ENAMstruct& spellEffect : spell->mEffects.mList)
@@ -249,7 +249,7 @@ namespace MWGui
                         int school = MWMechanics::getSpellSchool(spell, player);
                         info.text = "#{sSchool}: " + sSchoolNames[school];
                     }
-                    std::string cost = focus->getUserString("SpellCost");
+                    std::string cost = focus->getUserString("SpellCost").data();
                     if (cost != "" && cost != "0")
                         info.text += MWGui::ToolTips::getValueString(spell->mData.mCost, "#{sCastCost}");
                     info.effects = effects;
@@ -258,12 +258,11 @@ namespace MWGui
                 else if (type == "Layout")
                 {
                     // tooltip defined in the layout
-                    MyGUI::Widget* tooltip;
-                    getWidget(tooltip, focus->getUserString("ToolTipLayout"));
+                    MyGUI::Widget* tooltip = getWidget(focus->getUserString("ToolTipLayout").data());
 
                     tooltip->setVisible(true);
 
-                    std::map<std::string, std::string> userStrings = focus->getUserStrings();
+                    auto userStrings = focus->getUserStrings();
                     for (auto& userStringPair : userStrings)
                     {
                         size_t underscorePos = userStringPair.first.find('_');
@@ -280,8 +279,7 @@ namespace MWGui
                             key.erase(key.begin(), key.begin() + caretPos + 1);
                         }
 
-                        MyGUI::Widget* w;
-                        getWidget(w, widgetName);
+                        MyGUI::Widget* w = getWidget(widgetName);
                         if (type == "Property")
                             w->setProperty(key, userStringPair.second);
                         else if (type == "UserData")

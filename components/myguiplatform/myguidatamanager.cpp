@@ -26,7 +26,7 @@ MyGUI::IDataStream *DataManager::getData(const std::string &name) OPENMW_MYGUI_C
         Log(Debug::Error) << "DataManager::getData: Failed to open '" << name << "'";
         return nullptr;
     }
-    return new MyGUI::DataFileStream(stream.release());
+    return new MyGUI::DataFileStream(std::move(stream));
 }
 
 void DataManager::freeData(MyGUI::IDataStream *data)
@@ -49,7 +49,7 @@ const MyGUI::VectorString &DataManager::getDataListNames(const std::string &patt
     return strings;
 }
 
-const std::string &DataManager::getDataPath(const std::string &name) OPENMW_MYGUI_CONST_GETTER_3_4_1
+std::string DataManager::getDataPath(const std::string &name) OPENMW_MYGUI_CONST_GETTER_3_4_1
 {
     static std::string result;
     result.clear();

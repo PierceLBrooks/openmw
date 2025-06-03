@@ -155,7 +155,7 @@ namespace MWGui
 
     void TravelWindow::onTravelButtonClick(MyGUI::Widget* _sender)
     {
-        std::istringstream iss(_sender->getUserString("price"));
+        std::istringstream iss(std::string(_sender->getUserString("price").data()));
         int price;
         iss >> price;
 
@@ -197,7 +197,7 @@ namespace MWGui
 
         MWBase::Environment::get().getWindowManager()->fadeScreenOut(1);
         ESM::Position pos = *_sender->getUserData<ESM::Position>();
-        std::string cellname = _sender->getUserString("Destination");
+        std::string cellname = _sender->getUserString("Destination").data();
         bool interior = _sender->getUserString("interior") == "y";
         if (mPtr.getCell()->isExterior())
         {
